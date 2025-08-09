@@ -17,8 +17,7 @@
     position: absolute;
     bottom: 0;
     width: 82px;
-    left: 118px;
-    /*animation: pizza-animation 2s infinite linear;*/
+    animation: pizza-animation 1.5s infinite linear;
 }
 
 .pug{
