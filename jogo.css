@@ -14,6 +14,22 @@
     background: linear-gradient(#ffae00, #fbff00);
 }
 
+.pontuacao-board{
+    width: 100%;
+    height: 440px;
+    bottom: 0;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content:space-around;
+}
+
+
+.pontuacao{
+    color: rgb(0, 0, 0);
+    font-size: 40px;
+}
+
 .pizza{
     position: absolute;
     bottom: 0;
