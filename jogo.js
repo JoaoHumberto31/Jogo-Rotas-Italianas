@@ -1,5 +1,7 @@
 const pug = document.querySelector('.pug');
 const pizza = document.querySelector('.pizza');
+const sol = document.querySelector('.sol');
+const background = document.querySelector('.game-board');
 
 const jump = () => {
     pug.classList.add('jump')
@@ -13,15 +15,23 @@ const loop = setInterval(() => {
 
     const pizzaPosition = +window.getComputedStyle(pizza).left.replace('px', '')
     const pugPosition = +window.getComputedStyle(pug).bottom.replace('px', '');
+    const solPosition = +window.getComputedStyle(sol).left.replace('px', '');
 
     if(pizzaPosition <= 118 && pizzaPosition > 0 && pugPosition < -8) {
+
+        sol.style.animation = 'none';
+        sol.style.left = `${solPosition}px`;
 
         pizza.style.animation = 'none';
         pizza.style.left = `${pizzaPosition}px`;
 
         pug.style.animation = 'none';
         pug.style.bottom = `${pugPosition}px`;
+
         
+        sol.src = './img/Lua.png'
+        sol.style.width = '190px';
+        background.style.background = 'linear-gradient(#060057, #0051ffa6)';
 
         pug.src = './img/pugViniTriste.png'
         pug.style.width = '90px'
