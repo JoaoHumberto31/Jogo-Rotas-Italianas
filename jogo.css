@@ -7,11 +7,12 @@
 .game-board{
     width: 100%;
     height: 500px;
-    border-bottom: 15px solid rgba(30, 211, 39, 0.815);
+    border-bottom: 15px solid rgba(13, 165, 20, 0.815);
     margin: 0 auto;
     position: relative;
     overflow: hidden;
     background: linear-gradient(#ffae00, #fbff00);
+    display: flex;
 }
 
 .pontuacao-board{
@@ -22,12 +23,36 @@
     overflow: hidden;
     display: flex;
     justify-content:space-around;
+    background-image: url(./img/Terra.png);
 }
-
 
 .pontuacao{
     color: rgb(0, 0, 0);
     font-size: 40px;
+    background-color: white;
+    height: 60px;
+    width: 300px;
+    border-radius: 50px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.restart {
+    position: absolute;
+    top: 50%;     
+    left: 50%;    
+    transform: translate(-50%, -50%);
+    font-size: 23px;
+    padding: 8px 50px;
+    background-color: #9900d6;
+    border: rgb(37, 0, 80) solid 3px;
+    color: rgb(75, 22, 105);
+    cursor: pointer;
+    visibility:hidden;
+}
+
+.restart:hover{
+    background-color: #a902eb;
 }
 
 .pizza{
