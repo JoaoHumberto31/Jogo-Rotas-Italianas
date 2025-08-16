@@ -4,6 +4,13 @@
     box-sizing: border-box;
 }
 
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* impede rolagem */
+    height: 100vh;     /* ocupa 100% da altura da tela */
+}
+
 .game-board{
     width: 100%;
     height: 500px;
