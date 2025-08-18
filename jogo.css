@@ -76,11 +76,11 @@ html, body {
     animation: sol-animation 25s linear;
 }
 
-.pug{
-    width: 240px;
+.pessoa1{
+    width: 140px;
     position: absolute;
-    bottom: -80px;
-    left: -40px;
+    bottom: 0px;
+    left: -10px;
 }
 
 .jump{
@@ -107,22 +107,22 @@ html, body {
 
 @keyframes jump{
     0%{
-        bottom: -80px;
+        bottom: 0px;
     }
 
     40%{
-        bottom: 50px;
+        bottom: 100px;
     }
 
     50%{
-        bottom: 50px;
+        bottom: 100px;
     }
 
     60%{
-        bottom: 50px;
+        bottom: 100px;
     }
 
     100%{
-        bottom: -80px;
+        bottom: 0px;
     }
 }

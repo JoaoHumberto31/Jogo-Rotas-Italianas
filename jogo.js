@@ -1,4 +1,4 @@
-const pug = document.querySelector('.pug');
+const pessoa = document.querySelector('.pessoa1');
 const pizza = document.querySelector('.pizza');
 const sol = document.querySelector('.sol');
 const background = document.querySelector('.game-board');
@@ -12,8 +12,8 @@ let jogoAtivo = true;
 
 // pulo
 const jump = () => {
-  pug.classList.add('jump');
-  setTimeout(() => pug.classList.remove('jump'), 500);
+  pessoa.classList.add('jump');
+  setTimeout(() => pessoa.classList.remove('jump'), 500);
 };
 
 // pontos
@@ -31,10 +31,10 @@ let loop;
 function startLoop() {
   loop = setInterval(() => {
     const pizzaPosition = +getComputedStyle(pizza).left.replace('px','');
-    const pugPosition   = +getComputedStyle(pug).bottom.replace('px','');
+    const pessoaPosition   = +getComputedStyle(pessoa).bottom.replace('px','');
     const solPosition   = +getComputedStyle(sol).left.replace('px','');
 
-    if (pizzaPosition <= 118 && pizzaPosition > 0 && pugPosition < -8) {
+    if (pizzaPosition <= 118 && pizzaPosition > 0 && pessoaPosition < 70) {
       mortes++;
       morteEl.textContent = `Mortes: ${mortes}`;
       jogoAtivo = false;
@@ -46,18 +46,18 @@ function startLoop() {
       pizza.style.animation = 'none';
       pizza.style.left = `${pizzaPosition}px`;
 
-      pug.style.animation = 'none';
-      pug.style.bottom = `${pugPosition}px`;
+      pessoa.style.animation = 'none';
+      pessoa.style.bottom = `${pessoaPosition}px`;
 
       // visual de "morte"
       sol.src = './img/Lua.png';
       sol.style.width = '190px';
       background.style.background = 'linear-gradient(#060057, #0051ffa6)';
 
-      pug.src = './img/pugViniTriste.png';
-      pug.style.width = '90px';
-      pug.style.marginLeft = '80px';
-      pug.style.marginBottom = '80px';
+      pessoa.src = './img/pessoa-triste.png';
+      pessoa.style.width = '90px';
+      pessoa.style.marginLeft = '25px';
+      pessoa.style.marginBottom = '0px';
 
       clearInterval(loop);
     }
@@ -78,7 +78,7 @@ function iniciarJogo() {
   pizza.style.right = '';
   sol.style.left = '';
   sol.style.right = '';
-  pug.style.bottom = '';
+  pessoa.style.bottom = '';
 
   // resetar animações (toggle + reflow para garantir restart)
   pizza.style.animation = 'none';
@@ -86,7 +86,7 @@ function iniciarJogo() {
   void pizza.offsetWidth; // força reflow
   void sol.offsetWidth;
   
-  pug.style.animation = '';
+  pessoa.style.animation = '';
 
   pizza.style.animation = 'pizza-animation 1.5s linear infinite';
   sol.style.animation = 'sol-animation 25s linear infinite';
@@ -97,10 +97,10 @@ function iniciarJogo() {
   sol.style.width = '240px';
   background.style.background = 'linear-gradient(#ffae00, #fbff00)';
 
-  pug.src = './img/pugVIni.gif';
-  pug.style.width = '240px';
-  pug.style.marginLeft = '0';
-  pug.style.marginBottom = '0';
+  pessoa.src = './img/pessoa-correndo.gif';
+  pessoa.style.width = '140px';
+  pessoa.style.marginLeft = '0';
+  pessoa.style.marginBottom = '0';
 
   // recriar o loop de colisão
   startLoop();
