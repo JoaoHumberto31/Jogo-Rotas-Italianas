@@ -5,6 +5,7 @@ const background = document.querySelector('.game-board');
 const pontoEl = document.getElementById('ponto');
 const morteEl = document.getElementById('morte');
 const reiniciarId = document.getElementById('reiniciar');
+const inicioId = document.getElementById('inicio');
 
 let pontos = 0;
 let mortes = 0;
@@ -23,6 +24,7 @@ setInterval(() => {
     pontoEl.textContent = `Pontos: ${pontos}`;
   } else {
     reiniciarId.style.visibility = 'visible';
+    inicioId.style.visibility = 'visible';
   }
 }, 1000);
 
@@ -69,6 +71,7 @@ startLoop();
 function iniciarJogo() {
   jogoAtivo = true;
   reiniciarId.style.visibility = 'hidden';
+  inicioId.style.visibility = 'hidden';
   pontos = 0;
   pontoEl.textContent = 'Pontos: 0';
   pontoEl.textContent = `Pontos: ${pontos}`;
@@ -110,6 +113,10 @@ function iniciarJogo() {
 reiniciarId.addEventListener('click', () => {
   iniciarJogo();
 });
+
+inicioId.addEventListener('click', () => {
+  window.location.href = 'telaInicial.html'
+})
 
 // espaço para pular
 document.addEventListener('keydown', (event) => {

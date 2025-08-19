@@ -44,9 +44,9 @@ html, body {
     margin-top: 10px;
 }
 
-.restart {
+.botao-restart {
     position: absolute;
-    top: 50%;     
+    top: 44%;     
     left: 50%;    
     transform: translate(-50%, -50%);
     font-size: 23px;
@@ -58,7 +58,22 @@ html, body {
     visibility:hidden;
 }
 
-.restart:hover{
+.botao-inicio{
+    position: absolute;
+    top: 56%;     
+    left: 50%;    
+    transform: translate(-50%, -50%);
+    font-size: 23px;
+    padding: 8px 67px;
+    background-color: #9900d6;
+    border: rgb(37, 0, 80) solid 3px;
+    color: rgb(75, 22, 105);
+    cursor: pointer;
+    visibility:hidden;
+}
+
+.botao-restart:hover,
+.botao-inicio:hover{
     background-color: #a902eb;
 }
 
@@ -111,15 +126,15 @@ html, body {
     }
 
     40%{
-        bottom: 100px;
+        bottom: 120px;
     }
 
     50%{
-        bottom: 100px;
+        bottom: 120px;
     }
 
     60%{
-        bottom: 100px;
+        bottom: 120px;
     }
 
     100%{
