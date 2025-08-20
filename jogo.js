@@ -1,5 +1,5 @@
 const pessoa = document.querySelector('.pessoa1');
-const pizza = document.querySelector('.pizza');
+const tijolo = document.querySelector('.tijolo');
 const sol = document.querySelector('.sol');
 const background = document.querySelector('.game-board');
 const pontoEl = document.getElementById('ponto');
@@ -32,11 +32,11 @@ setInterval(() => {
 let loop;
 function startLoop() {
   loop = setInterval(() => {
-    const pizzaPosition = +getComputedStyle(pizza).left.replace('px','');
+    const tijoloPosition = +getComputedStyle(tijolo).left.replace('px','');
     const pessoaPosition   = +getComputedStyle(pessoa).bottom.replace('px','');
     const solPosition   = +getComputedStyle(sol).left.replace('px','');
 
-    if (pizzaPosition <= 118 && pizzaPosition > 0 && pessoaPosition < 70) {
+    if (tijoloPosition <= 118 && tijoloPosition > 0 && pessoaPosition < 70) {
       mortes++;
       morteEl.textContent = `Mortes: ${mortes}`;
       jogoAtivo = false;
@@ -45,8 +45,8 @@ function startLoop() {
       sol.style.animation = 'none';
       sol.style.left = `${solPosition}px`;
 
-      pizza.style.animation = 'none';
-      pizza.style.left = `${pizzaPosition}px`;
+      tijolo.style.animation = 'none';
+      tijolo.style.left = `${tijoloPosition}px`;
 
       pessoa.style.animation = 'none';
       pessoa.style.bottom = `${pessoaPosition}px`;
@@ -77,21 +77,21 @@ function iniciarJogo() {
   pontoEl.textContent = `Pontos: ${pontos}`;
 
   // limpar posições inline que travam a animação (keyframes usam "right")
-  pizza.style.left = '';
-  pizza.style.right = '';
+  tijolo.style.left = '';
+  tijolo.style.right = '';
   sol.style.left = '';
   sol.style.right = '';
   pessoa.style.bottom = '';
 
   // resetar animações (toggle + reflow para garantir restart)
-  pizza.style.animation = 'none';
+  tijolo.style.animation = 'none';
   sol.style.animation = 'none';
-  void pizza.offsetWidth; // força reflow
+  void tijolo.offsetWidth; // força reflow
   void sol.offsetWidth;
   
   pessoa.style.animation = '';
 
-  pizza.style.animation = 'pizza-animation 1.5s linear infinite';
+  tijolo.style.animation = 'tijolo-animation 1.5s linear infinite';
   sol.style.animation = 'sol-animation 25s linear infinite';
   
 
@@ -121,4 +121,18 @@ inicioId.addEventListener('click', () => {
 // espaço para pular
 document.addEventListener('keydown', (event) => {
   if (event.code === 'Space' && jogoAtivo) jump();
+});
+
+
+sol.addEventListener('animationiteration', () => {
+  // Ação a executar quando o sol "chega do outro lado"
+  console.log('O sol completou uma volta!');
+
+  // Exemplo: aumentar a velocidade da animação do tijolo (aumenta a dificuldade)
+  const currentDuration = parseFloat(getComputedStyle(tijolo).animationDuration);
+  const newDuration = Math.max(0.5, currentDuration - 0.2); // diminui o tempo, mas não menor que 0.5s
+
+  tijolo.style.animationDuration = `${newDuration}s`;
+
+  // Ou qualquer outra ação que quiser executar...
 });
