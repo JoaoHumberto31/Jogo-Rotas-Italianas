@@ -17,6 +17,9 @@ const jump = () => {
   setTimeout(() => pessoa.classList.remove('jump'), 500);
 };
 
+
+// arrumar para inciar depois que clicar no botao start do card
+
 // pontos
 setInterval(() => {
   if (jogoAtivo) {
