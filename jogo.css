@@ -88,7 +88,7 @@ html, body {
     width: 240px;
     position: absolute;
     bottom: 240px;
-    animation: sol-animation 25s linear;
+    animation: sol-animation 20s linear;
 }
 
 .pessoa1{

@@ -33,9 +33,30 @@ let loop;
 function startLoop() {
   loop = setInterval(() => {
     const tijoloPosition = +getComputedStyle(tijolo).left.replace('px','');
-    const pessoaPosition   = +getComputedStyle(pessoa).bottom.replace('px','');
-    const solPosition   = +getComputedStyle(sol).left.replace('px','');
+    const pessoaPosition = +getComputedStyle(pessoa).bottom.replace('px','');
+    const solPosition = +getComputedStyle(sol).left.replace('px','');
 
+    // --- condição: sol chegou no canto esquerdo ---
+    if (solPosition <= 0) {
+      jogoAtivo = false;
+      reiniciarId.style.visibility = 'visible';
+      inicioId.style.visibility = 'visible';
+
+      // congelar posições
+      sol.style.animation = 'none';
+      sol.style.left = '0px';
+
+      tijolo.style.animation = 'none';
+      tijolo.style.left = `${tijoloPosition}px`;
+
+      pessoa.style.animation = 'none';
+      pessoa.style.bottom = `${pessoaPosition}px`;
+
+      clearInterval(loop);
+      return; // evita checar colisão depois
+    }
+
+    // --- colisão com tijolo ---
     if (tijoloPosition <= 118 && tijoloPosition > 0 && pessoaPosition < 70) {
       mortes++;
       morteEl.textContent = `Mortes: ${mortes}`;
@@ -92,9 +113,8 @@ function iniciarJogo() {
   pessoa.style.animation = '';
 
   tijolo.style.animation = 'tijolo-animation 1.5s linear infinite';
-  sol.style.animation = 'sol-animation 25s linear infinite';
+  sol.style.animation = 'sol-animation 20s linear infinite';
   
-
   // restaurar sprites/estilos
   sol.src = './img/sol.png';
   sol.style.width = '240px';
@@ -121,18 +141,4 @@ inicioId.addEventListener('click', () => {
 // espaço para pular
 document.addEventListener('keydown', (event) => {
   if (event.code === 'Space' && jogoAtivo) jump();
-});
-
-
-sol.addEventListener('animationiteration', () => {
-  // Ação a executar quando o sol "chega do outro lado"
-  console.log('O sol completou uma volta!');
-
-  // Exemplo: aumentar a velocidade da animação do tijolo (aumenta a dificuldade)
-  const currentDuration = parseFloat(getComputedStyle(tijolo).animationDuration);
-  const newDuration = Math.max(0.5, currentDuration - 0.2); // diminui o tempo, mas não menor que 0.5s
-
-  tijolo.style.animationDuration = `${newDuration}s`;
-
-  // Ou qualquer outra ação que quiser executar...
 });
