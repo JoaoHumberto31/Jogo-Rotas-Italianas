@@ -13,14 +13,17 @@ const startBtn = document.getElementById('start-btn');
 let pontos = 0;
 let mortes = 0;
 let jogoAtivo = false; // começa desativado
-let loop;
+let loopColisao;
+let loopPontos;
 
-// Botão da introdução
+// ===========================
+// Botão Start
 startBtn.addEventListener('click', () => {
     introScreen.style.display = 'none'; // esconde tela de introdução
-    jogoAtivo = true; // ativa o jogo
+    iniciarJogo();
 });
 
+// ===========================
 // Função de pulo
 const jump = () => {
     if (!jogoAtivo) return;
@@ -28,40 +31,29 @@ const jump = () => {
     setTimeout(() => pessoa.classList.remove('jump'), 500);
 };
 
-// Contador de pontos
-setInterval(() => {
-    if (jogoAtivo) {
-        pontos++;
-        pontoEl.textContent = `Pontos: ${pontos}`;
-    } else {
-        reiniciarId.style.visibility = 'visible';
-        inicioId.style.visibility = 'visible';
-    }
-}, 1000);
-
+// ===========================
 // Loop de colisão
 function startLoop() {
-    loop = setInterval(() => {
+    loopColisao = setInterval(() => {
         if (!jogoAtivo) return;
 
         const tijoloPosition = +getComputedStyle(tijolo).left.replace('px', '');
         const pessoaPosition = +getComputedStyle(pessoa).bottom.replace('px', '');
-        const solPosition = +getComputedStyle(sol).left.replace('px', '');
 
         if (tijoloPosition <= 118 && tijoloPosition > 0 && pessoaPosition < 70) {
+            // Colisão
             mortes++;
             morteEl.textContent = `Mortes: ${mortes}`;
             jogoAtivo = false;
 
             // Congelar posições
-            sol.style.animation = 'none';
-            sol.style.left = `${solPosition}px`;
+            sol.style.animationPlayState = 'paused';
+            tijolo.style.animationPlayState = 'paused';
+            pessoa.style.animationPlayState = 'paused';
 
-            tijolo.style.animation = 'none';
-            tijolo.style.left = `${tijoloPosition}px`;
-
+            const pessoaBottom = parseFloat(getComputedStyle(pessoa).bottom);
             pessoa.style.animation = 'none';
-            pessoa.style.bottom = `${pessoaPosition}px`;
+            pessoa.style.bottom = `${pessoaBottom}px`;
 
             // Visual de "morte"
             sol.src = './img/Lua.png';
@@ -71,15 +63,19 @@ function startLoop() {
             pessoa.src = './img/pessoa-triste.png';
             pessoa.style.width = '90px';
             pessoa.style.marginLeft = '25px';
-            pessoa.style.marginBottom = '0px';
+            pessoa.style.marginBottom = `${pessoaPosition}`;
 
-            clearInterval(loop);
+            clearInterval(loopColisao);
+            clearInterval(loopPontos);
+
+            reiniciarId.style.visibility = 'visible';
+            inicioId.style.visibility = 'visible';
         }
     }, 5);
 }
-startLoop();
 
-// Reiniciar jogo
+// ===========================
+// Reiniciar/Iniciar Jogo
 function iniciarJogo() {
     jogoAtivo = true;
     reiniciarId.style.visibility = 'hidden';
@@ -115,23 +111,36 @@ function iniciarJogo() {
     pessoa.style.marginLeft = '0';
     pessoa.style.marginBottom = '0';
 
-    // Reiniciar loop
+    // Ativar animações
+    tijolo.style.animationPlayState = 'running';
+    sol.style.animationPlayState = 'running';
+    pessoa.style.animationPlayState = 'running';
+
+    // Loop de colisão e pontos
     startLoop();
+    loopPontos = setInterval(() => {
+        if (jogoAtivo) {
+            pontos++;
+            pontoEl.textContent = `Pontos: ${pontos}`;
+        }
+    }, 1000);
 }
 
-// Botões
+// ===========================
+// Botões Reiniciar e Início
 reiniciarId.addEventListener('click', iniciarJogo);
-
 inicioId.addEventListener('click', () => {
     window.location.href = 'index.html';
 });
 
+// ===========================
 // Tecla espaço para pular
 document.addEventListener('keydown', (event) => {
-    if (event.code === 'Space' && jogoAtivo) jump();
+    if (event.code === 'Space') jump();
 });
 
-// Dificuldade aumenta quando o sol completa uma volta
+// ===========================
+// Dificuldade aumenta com o sol
 sol.addEventListener('animationiteration', () => {
     const currentDuration = parseFloat(getComputedStyle(tijolo).animationDuration);
     const newDuration = Math.max(0.5, currentDuration - 0.2);

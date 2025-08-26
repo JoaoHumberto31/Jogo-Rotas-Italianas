@@ -207,3 +207,6 @@ html, body {
         transform: scale(1.1);
     }
 }
+.tijolo, .sol, .pessoa1 {
+    animation-play-state: paused;
+}
