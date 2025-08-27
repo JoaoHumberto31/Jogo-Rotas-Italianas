@@ -7,142 +7,141 @@ const morteEl = document.getElementById('morte');
 const reiniciarId = document.getElementById('reiniciar');
 const inicioId = document.getElementById('inicio');
 
-const introScreen = document.getElementById('intro-screen');
-const startBtn = document.getElementById('start-btn');
-
 let pontos = 0;
 let mortes = 0;
-let jogoAtivo = false; // começa desativado
-let loopColisao;
-let loopPontos;
+let jogoAtivo = true;
 
-// ===========================
-// Botão Start
-startBtn.addEventListener('click', () => {
-    introScreen.style.display = 'none'; // esconde tela de introdução
-    iniciarJogo();
-});
-
-// ===========================
-// Função de pulo
+// pulo
 const jump = () => {
-    if (!jogoAtivo) return;
-    pessoa.classList.add('jump');
-    setTimeout(() => pessoa.classList.remove('jump'), 500);
+  pessoa.classList.add('jump');
+  setTimeout(() => pessoa.classList.remove('jump'), 500);
 };
 
-// ===========================
-// Loop de colisão
-function startLoop() {
-    loopColisao = setInterval(() => {
-        if (!jogoAtivo) return;
 
-        const tijoloPosition = +getComputedStyle(tijolo).left.replace('px', '');
-        const pessoaPosition = +getComputedStyle(pessoa).bottom.replace('px', '');
+// arrumar para inciar depois que clicar no botao start do card
 
-        if (tijoloPosition <= 118 && tijoloPosition > 0 && pessoaPosition < 70) {
-            // Colisão
-            mortes++;
-            morteEl.textContent = `Mortes: ${mortes}`;
-            jogoAtivo = false;
-
-            // Congelar posições
-            sol.style.animationPlayState = 'paused';
-            tijolo.style.animationPlayState = 'paused';
-            pessoa.style.animationPlayState = 'paused';
-
-            const pessoaBottom = parseFloat(getComputedStyle(pessoa).bottom);
-            pessoa.style.animation = 'none';
-            pessoa.style.bottom = `${pessoaBottom}px`;
-
-            // Visual de "morte"
-            sol.src = './img/Lua.png';
-            sol.style.width = '190px';
-            background.style.background = 'linear-gradient(#060057, #0051ffa6)';
-
-            pessoa.src = './img/pessoa-triste.png';
-            pessoa.style.width = '90px';
-            pessoa.style.marginLeft = '25px';
-            pessoa.style.marginBottom = `${pessoaPosition}`;
-
-            clearInterval(loopColisao);
-            clearInterval(loopPontos);
-
-            reiniciarId.style.visibility = 'visible';
-            inicioId.style.visibility = 'visible';
-        }
-    }, 5);
-}
-
-// ===========================
-// Reiniciar/Iniciar Jogo
-function iniciarJogo() {
-    jogoAtivo = true;
-    reiniciarId.style.visibility = 'hidden';
-    inicioId.style.visibility = 'hidden';
-    pontos = 0;
+// pontos
+setInterval(() => {
+  if (jogoAtivo) {
+    pontos++;
     pontoEl.textContent = `Pontos: ${pontos}`;
+  } else {
+    reiniciarId.style.visibility = 'visible';
+    inicioId.style.visibility = 'visible';
+  }
+}, 1000);
 
-    // Resetar posições
-    tijolo.style.left = '';
-    tijolo.style.right = '';
-    sol.style.left = '';
-    sol.style.right = '';
-    pessoa.style.bottom = '';
+// loop de colisão (recriável)
+let loop;
+function startLoop() {
+  loop = setInterval(() => {
+    const tijoloPosition = +getComputedStyle(tijolo).left.replace('px','');
+    const pessoaPosition = +getComputedStyle(pessoa).bottom.replace('px','');
+    const solPosition = +getComputedStyle(sol).left.replace('px','');
 
-    // Resetar animações
-    tijolo.style.animation = 'none';
-    sol.style.animation = 'none';
-    void tijolo.offsetWidth; // reflow
-    void sol.offsetWidth;
+    // --- condição: sol chegou no canto esquerdo ---
+    if (solPosition <= 0) {
+      jogoAtivo = false;
+      reiniciarId.style.visibility = 'visible';
+      inicioId.style.visibility = 'visible';
 
-    pessoa.style.animation = '';
+      // congelar posições
+      sol.style.animation = 'none';
+      sol.style.left = '0px';
 
-    tijolo.style.animation = 'tijolo-animation 1.5s linear infinite';
-    sol.style.animation = 'sol-animation 20s linear infinite';
+      tijolo.style.animation = 'none';
+      tijolo.style.left = `${tijoloPosition}px`;
 
-    // Restaurar sprites
-    sol.src = './img/sol.png';
-    sol.style.width = '240px';
-    background.style.background = 'linear-gradient(#ffae00, #fbff00)';
+      pessoa.style.animation = 'none';
+      pessoa.style.bottom = `${pessoaPosition}px`;
 
-    pessoa.src = './img/pessoa-correndo.gif';
-    pessoa.style.width = '140px';
-    pessoa.style.marginLeft = '0';
-    pessoa.style.marginBottom = '0';
+      clearInterval(loop);
+      return; // evita checar colisão depois
+    }
 
-    // Ativar animações
-    tijolo.style.animationPlayState = 'running';
-    sol.style.animationPlayState = 'running';
-    pessoa.style.animationPlayState = 'running';
+    // --- colisão com tijolo ---
+    if (tijoloPosition <= 118 && tijoloPosition > 0 && pessoaPosition < 70) {
+      mortes++;
+      morteEl.textContent = `Mortes: ${mortes}`;
+      jogoAtivo = false;
 
-    // Loop de colisão e pontos
-    startLoop();
-    loopPontos = setInterval(() => {
-        if (jogoAtivo) {
-            pontos++;
-            pontoEl.textContent = `Pontos: ${pontos}`;
-        }
-    }, 1000);
+      // congelar posições
+      sol.style.animation = 'none';
+      sol.style.left = `${solPosition}px`;
+
+      tijolo.style.animation = 'none';
+      tijolo.style.left = `${tijoloPosition}px`;
+
+      pessoa.style.animation = 'none';
+      pessoa.style.bottom = `${pessoaPosition}px`;
+
+      // visual de "morte"
+      sol.src = './img/Lua.png';
+      sol.style.width = '190px';
+      background.style.background = 'linear-gradient(#060057, #0051ffa6)';
+
+      pessoa.src = './img/pessoa-triste.png';
+      pessoa.style.width = '90px';
+      pessoa.style.marginLeft = '25px';
+      pessoa.style.marginBottom = '0px';
+
+      clearInterval(loop);
+    }
+  }, 5);
+}
+startLoop();
+
+// reiniciar rodada (sem perder pontos/mortes)
+function iniciarJogo() {
+  jogoAtivo = true;
+  reiniciarId.style.visibility = 'hidden';
+  inicioId.style.visibility = 'hidden';
+  pontos = 0;
+  pontoEl.textContent = 'Pontos: 0';
+  pontoEl.textContent = `Pontos: ${pontos}`;
+
+  // limpar posições inline que travam a animação (keyframes usam "right")
+  tijolo.style.left = '';
+  tijolo.style.right = '';
+  sol.style.left = '';
+  sol.style.right = '';
+  pessoa.style.bottom = '';
+
+  // resetar animações (toggle + reflow para garantir restart)
+  tijolo.style.animation = 'none';
+  sol.style.animation = 'none';
+  void tijolo.offsetWidth; // força reflow
+  void sol.offsetWidth;
+  
+  pessoa.style.animation = '';
+
+  tijolo.style.animation = 'tijolo-animation 1.5s linear infinite';
+  sol.style.animation = 'sol-animation 20s linear infinite';
+  
+  // restaurar sprites/estilos
+  sol.src = './img/sol.png';
+  sol.style.width = '240px';
+  background.style.background = 'linear-gradient(#ffae00, #fbff00)';
+
+  pessoa.src = './img/pessoa-correndo.gif';
+  pessoa.style.width = '140px';
+  pessoa.style.marginLeft = '0';
+  pessoa.style.marginBottom = '0';
+
+  // recriar o loop de colisão
+  startLoop();
 }
 
-// ===========================
-// Botões Reiniciar e Início
-reiniciarId.addEventListener('click', iniciarJogo);
+// botão
+reiniciarId.addEventListener('click', () => {
+  iniciarJogo();
+});
+
 inicioId.addEventListener('click', () => {
-    window.location.href = 'index.html';
-});
+  window.location.href = 'telaInicial.html'
+})
 
-// ===========================
-// Tecla espaço para pular
+// espaço para pular
 document.addEventListener('keydown', (event) => {
-    if (event.code === 'Space') jump();
-});
-
-// ===========================
-// Dificuldade aumenta com o sol
-sol.addEventListener('animationiteration', () => {
-    const currentDuration = parseFloat(getComputedStyle(tijolo).animationDuration);
-    const newDuration = Math.max(0.5, currentDuration - 0.2);
-    tijolo.style.animationDuration = `${newDuration}s`;
+  if (event.code === 'Space' && jogoAtivo) jump();
 });
