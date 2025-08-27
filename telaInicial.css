@@ -47,7 +47,7 @@ html, body {
 }
 .pixel-button {
     display: block;
-    padding: 60px 100px;
+    padding: 40px 60px;
     background-color: #FFA500;
     color: black;
     font-family: 'Press Start 2P', cursive;
