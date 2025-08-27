@@ -6,6 +6,7 @@ const pontoEl = document.getElementById('ponto');
 const morteEl = document.getElementById('morte');
 const reiniciarId = document.getElementById('reiniciar');
 const inicioId = document.getElementById('inicio');
+const faseEl = document.getElementById('fase');
 
 const introScreen = document.getElementById('intro-screen');
 const startBtn = document.getElementById('start-btn');
@@ -15,6 +16,8 @@ let mortes = 0;
 let jogoAtivo = false; // começa desativado
 let loopColisao;
 let loopPontos;
+let fase = 1;
+const pontosPorFase = 16;
 
 // ===========================
 // Botão Start
@@ -122,6 +125,9 @@ function iniciarJogo() {
         if (jogoAtivo) {
             pontos++;
             pontoEl.textContent = `Pontos: ${pontos}`;
+            if (pontos % pontosPorFase === 0) {
+                mudarDeFase();
+            }
         }
     }, 1000);
 }
@@ -146,3 +152,12 @@ sol.addEventListener('animationiteration', () => {
     const newDuration = Math.max(0.5, currentDuration - 0.2);
     tijolo.style.animationDuration = `${newDuration}s`;
 });
+
+// Mudar de fase
+function mudarDeFase() {
+    fase++;
+    // Atualiza visual da fase
+    if (faseEl) faseEl.textContent = `Fase: ${fase}`;
+    // Pode direcionar para outra página ou modificar o jogo aqui
+    window.location.href = 'fase2.html'; // Exemplo de mudança de página
+}
