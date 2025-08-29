@@ -98,7 +98,7 @@ html, body {
 .tijolo {
     position: absolute;
     bottom: 0;
-    width: 82px;
+    width: 110px;
     animation: tijolo-animation 1.5s infinite linear;
 }
 
