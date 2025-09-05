@@ -159,5 +159,5 @@ function mudarDeFase() {
     // Atualiza visual da fase
     if (faseEl) faseEl.textContent = `Fase: ${fase}`;
     // Pode direcionar para outra página ou modificar o jogo aqui
-    window.location.href = 'animacaofinalfase1.html'; // Exemplo de mudança de página
+    window.location.href = 'fase2.html'; // Exemplo de mudança de página
 }
