@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Final Fase 1</title>
+<link rel="stylesheet" href="animacaofinalfase1.css">
+</head>
+<body>
+<main>
+    <!-- Tela de Introdução -->
+    <div id="intro-screen" class="intro-screen">
+        <div class="intro-box">
+            <h2>Final fase 1:</h2>
+            <p>Você conseguiu passar de fase!!</p>
+            <p>Parabéns, a igreja foi construída</p>
+            <p>Clique no botão abaixo para continuar</p>
+            <button id="start-btn" class="btn-start">Continuar</button>
+        </div>
+    </div>
+
+    <!-- Área do jogo -->
+    <div class="game-board">
+        <img src="/img/sol.png" class="sol">
+        <img src="/img/pessoa-correndo.gif" class="pessoa1">
+        <img src="/img/igreja-quebrada.png" class="tijolo" style="height: 500px;">
+
+        <div style="text-align: center; justify-content: center;">
+            <button class="botao-restart" id="reiniciar">Reiniciar</button>
+            <button class="botao-inicio" id="inicio">Início</button>
+        </div>
+    </div>
+
+    <!-- Caixa de diálogo -->
+    <div id="dialogo" class="dialogo">
+        <p id="dialogo-texto">Você conseguiu passar de fase! Parabéns 🎉</p>
+        <button onclick="proximaFase()">Próximo</button>
+    </div>
+
+    <div class="pontuacao-board"></div>
+</main>
+<script src="animacaofinalfase1.js"></script>
+</body>
+</html>
