@@ -38,7 +38,7 @@ startBtn.addEventListener('click', () => {
 const jump = () => {
     if (!jogoAtivo) return;
     gabriel.classList.add('jump');
-    setTimeout(() => gabriel.classList.remove('jump'), 500);
+    setTimeout(() => gabriel.classList.remove('jump'), 600);
 };
 
 // ===========================
