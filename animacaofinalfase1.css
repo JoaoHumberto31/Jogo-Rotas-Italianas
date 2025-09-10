@@ -90,7 +90,7 @@ html, body {
 /* Animações */
 @keyframes tijolo-animation {
     from { right: -90px; }
-    to { right: 50%; }
+    to { right: 5%; }
 }
 
 @keyframes sol-animation {
@@ -178,3 +178,15 @@ html, body {
     cursor: pointer;
     font-weight: bold;
 }
+.key {
+    display: inline-block;
+    padding: 2px 8px;
+    border: 2px solid #333;
+    border-radius: 6px;
+    background-color: #eee;
+    font-family: monospace, monospace;
+    font-weight: bold;
+    color: #333;
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    user-select: none; /* Para não deixar selecionar o texto, opcional */
+  }

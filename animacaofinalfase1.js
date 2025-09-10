@@ -4,6 +4,7 @@ const reiniciarId = document.getElementById('reiniciar');
 const inicioId = document.getElementById('inicio');
 const startBtn = document.getElementById('start-btn');
 const introScreen = document.getElementById('intro-screen');
+const espaco = document.getElementById('clicarEspaco');
 
 let posicao = 0;
 let jogoAtivo = false;
@@ -33,7 +34,10 @@ function mostrarDialogo() {
     dialogo.style.display = 'block';
     jogoAtivo = false;
 }
-
+function ClicarEspaco() {
+    espaco.style.display = 'block';
+    jogoAtivo = false;
+}
 // Botão "Próximo"
 function proximaFase() {
     window.location.href = "fase2.html";
@@ -60,10 +64,17 @@ document.addEventListener("keydown", (e) => {
     }
 
     // Checar limite de 28% da tela
-    const limite = window.innerWidth * 0.28;
+    const limite = window.innerWidth * 0.750;
     if (posicao >= limite) {
-        mostrarDialogo();
+        ClicarEspaco();
     }
+    document.addEventListener('keydown', function(event) {
+        if (event.code === 'Space') {
+          console.log('Espaço foi pressionado!');
+        }
+      });
+      
+   
 });
 
 // ===========================
