@@ -1,5 +1,6 @@
-const pessoa = document.querySelector('.pessoa1');
-const tijolo = document.querySelector('.tijolo');
+const gabriel = document.querySelector('.pessoa1');
+const madeira = document.querySelector('.madeira');
+const passaro = document.querySelector('.passaro');
 const sol = document.querySelector('.sol');
 const background = document.querySelector('.game-board');
 const pontoEl = document.getElementById('ponto');
@@ -13,16 +14,22 @@ const startBtn = document.getElementById('start-btn');
 
 let pontos = 0;
 let mortes = 0;
-let jogoAtivo = false; // começa desativado
+let jogoAtivo = false;
 let loopColisao;
 let loopPontos;
 let fase = 1;
+let vezDoTronco = true;   // controla quem está ativo
+let agachado = false;
 const pontosPorFase = 16;
+
+// Durações atuais (usadas p/ reiniciar animação preservando velocidade)
+let durMadeira = 1.5;
+let durPassaro = 1.8;
 
 // ===========================
 // Botão Start
 startBtn.addEventListener('click', () => {
-    introScreen.style.display = 'none'; // esconde tela de introdução
+    introScreen.style.display = 'none';
     iniciarJogo();
 });
 
@@ -30,55 +37,104 @@ startBtn.addEventListener('click', () => {
 // Função de pulo
 const jump = () => {
     if (!jogoAtivo) return;
-    pessoa.classList.add('jump');
-    setTimeout(() => pessoa.classList.remove('jump'), 500);
+    gabriel.classList.add('jump');
+    setTimeout(() => gabriel.classList.remove('jump'), 500);
 };
 
 // ===========================
-// Loop de colisão
+// Helpers para ativar um obstáculo de cada vez (reinicia animação no início da tela)
+function ativarTronco() {
+    vezDoTronco = true;
+    passaro.classList.remove('ativo');
+    madeira.classList.add('ativo');
+
+    // reinicia o ciclo pra sempre começar fora da tela à direita
+    madeira.style.animation = 'none';
+    void madeira.offsetWidth;
+    madeira.style.animation = `madeira-animation ${durMadeira}s linear infinite`;
+}
+
+function ativarPassaro() {
+    vezDoTronco = false;
+    madeira.classList.remove('ativo');
+    passaro.classList.add('ativo');
+
+    // reinicia o ciclo pra sempre começar fora da tela à direita
+    passaro.style.animation = 'none';
+    void passaro.offsetWidth;
+    passaro.style.animation = `passaro-animation ${durPassaro}s linear infinite`;
+}
+
+// ===========================
+// Alternar quando o obstáculo ATUAL terminar um ciclo
+madeira.addEventListener('animationiteration', () => {
+    if (vezDoTronco) ativarPassaro();
+});
+
+passaro.addEventListener('animationiteration', () => {
+    if (!vezDoTronco) ativarTronco();
+});
+
+// ===========================
+// Fim de jogo
+function fimDeJogo() {
+    mortes++;
+    morteEl.textContent = `Mortes: ${mortes}`;
+    jogoAtivo = false;
+
+    sol.style.animationPlayState = 'paused';
+    madeira.style.animationPlayState = 'paused';
+    passaro.style.animationPlayState = 'paused';
+    gabriel.style.animationPlayState = 'paused';
+
+    const gabrielBottom = parseFloat(getComputedStyle(gabriel).bottom);
+    gabriel.style.animation = 'none';
+    gabriel.style.bottom = `${gabrielBottom}px`;
+
+    sol.src = './img/Lua.png';
+    sol.style.width = '190px';
+    background.style.background = 'linear-gradient(#060057, #0051ffa6)';
+
+    gabriel.src = 'img/Ramthum triste.png';
+    gabriel.style.width = '90px';
+    gabriel.style.marginLeft = '25px';
+
+    clearInterval(loopColisao);
+    clearInterval(loopPontos);
+
+    reiniciarId.style.visibility = 'visible';
+    inicioId.style.visibility = 'visible';
+}
+
+// ===========================
+// Loop de colisão (checa só quem está .ativo)
 function startLoop() {
     loopColisao = setInterval(() => {
         if (!jogoAtivo) return;
 
-        const tijoloPosition = +getComputedStyle(tijolo).left.replace('px', '');
-        const pessoaPosition = +getComputedStyle(pessoa).bottom.replace('px', '');
+        const gabrielPosition = +getComputedStyle(gabriel).bottom.replace('px', '');
 
-        if (tijoloPosition <= 118 && tijoloPosition > 0 && pessoaPosition < 70) {
-            // Colisão
-            mortes++;
-            morteEl.textContent = `Mortes: ${mortes}`;
-            jogoAtivo = false;
+        // Tronco ativo?
+        if (madeira.classList.contains('ativo')) {
+            const madeiraPosition = +getComputedStyle(madeira).left.replace('px', '');
+            if (madeiraPosition <= 118 && madeiraPosition > 0 && gabrielPosition < 50) {
+                fimDeJogo();
+            }
+        }
 
-            // Congelar posições
-            sol.style.animationPlayState = 'paused';
-            tijolo.style.animationPlayState = 'paused';
-            pessoa.style.animationPlayState = 'paused';
-
-            const pessoaBottom = parseFloat(getComputedStyle(pessoa).bottom);
-            pessoa.style.animation = 'none';
-            pessoa.style.bottom = `${pessoaBottom}px`;
-
-            // Visual de "morte"
-            sol.src = './img/Lua.png';
-            sol.style.width = '190px';
-            background.style.background = 'linear-gradient(#060057, #0051ffa6)';
-
-            pessoa.src = './img/pessoa-triste.png';
-            pessoa.style.width = '90px';
-            pessoa.style.marginLeft = '25px';
-            pessoa.style.marginBottom = `${pessoaPosition}`;
-
-            clearInterval(loopColisao);
-            clearInterval(loopPontos);
-
-            reiniciarId.style.visibility = 'visible';
-            inicioId.style.visibility = 'visible';
+        // Pássaro ativo?
+        if (passaro.classList.contains('ativo')) {
+            const passaroPosition = +getComputedStyle(passaro).left.replace('px', '');
+            // só mata se NÃO estiver agachado
+            if (passaroPosition <= 118 && passaroPosition > 0 && !agachado) {
+                fimDeJogo();
+            }
         }
     }, 5);
 }
 
 // ===========================
-// Reiniciar/Iniciar Jogo
+// Iniciar/Reiniciar
 function iniciarJogo() {
     jogoAtivo = true;
     reiniciarId.style.visibility = 'hidden';
@@ -87,77 +143,100 @@ function iniciarJogo() {
     pontoEl.textContent = `Pontos: ${pontos}`;
 
     // Resetar posições
-    tijolo.style.left = '';
-    tijolo.style.right = '';
+    madeira.style.left = '';
+    passaro.style.left = '';
     sol.style.left = '';
-    sol.style.right = '';
-    pessoa.style.bottom = '';
+    gabriel.style.bottom = '';
 
     // Resetar animações
-    tijolo.style.animation = 'none';
+    madeira.style.animation = 'none';
+    passaro.style.animation = 'none';
     sol.style.animation = 'none';
-    void tijolo.offsetWidth; // reflow
-    void sol.offsetWidth;
+    void madeira.offsetWidth; void passaro.offsetWidth; void sol.offsetWidth;
 
-    pessoa.style.animation = '';
+    gabriel.style.animation = '';
 
-    tijolo.style.animation = 'tijolo-animation 1.5s linear infinite';
+    // Começa com TRONCO
+    madeira.classList.add('ativo');
+    passaro.classList.remove('ativo');
+    vezDoTronco = true;
+
+    // Aplica animações com as durações atuais
+    madeira.style.animation = `madeira-animation ${durMadeira}s linear infinite`;
+    passaro.style.animation = `passaro-animation ${durPassaro}s linear infinite`;
     sol.style.animation = 'sol-animation 20s linear infinite';
 
-    // Restaurar sprites
+    // Visual normal
     sol.src = './img/sol.png';
     sol.style.width = '240px';
-    background.style.background = 'linear-gradient(#ffae00, #fbff00)';
+    background.style.background = `url('img/floresta.jpg') no-repeat center center`;
+    background.style.backgroundSize = 'cover';
+    background.style.imageRendering = 'pixelated';
 
-    pessoa.src = './img/pessoa-correndo.gif';
-    pessoa.style.width = '140px';
-    pessoa.style.marginLeft = '0';
-    pessoa.style.marginBottom = '0';
+    gabriel.src = 'img/Gaybriel Ranthum.gif';
+    gabriel.style.width = '140px';
+    gabriel.style.marginLeft = '0';
+    gabriel.style.marginBottom = '0';
 
-    // Ativar animações
-    tijolo.style.animationPlayState = 'running';
+    // Rodar
+    madeira.style.animationPlayState = 'running';
+    passaro.style.animationPlayState = 'running';
     sol.style.animationPlayState = 'running';
-    pessoa.style.animationPlayState = 'running';
+    gabriel.style.animationPlayState = 'running';
 
-    // Loop de colisão e pontos
+    // Loops
     startLoop();
     loopPontos = setInterval(() => {
         if (jogoAtivo) {
             pontos++;
             pontoEl.textContent = `Pontos: ${pontos}`;
-            if (pontos % pontosPorFase === 0) {
-                mudarDeFase();
-            }
+            if (pontos % pontosPorFase === 0) mudarDeFase();
         }
     }, 1000);
 }
 
 // ===========================
-// Botões Reiniciar e Início
+// Botões
 reiniciarId.addEventListener('click', iniciarJogo);
-inicioId.addEventListener('click', () => {
-    window.location.href = 'index.html';
-});
+inicioId.addEventListener('click', () => window.location.href = 'index.html');
 
 // ===========================
-// Tecla espaço para pular
+// Teclas
 document.addEventListener('keydown', (event) => {
     if (event.code === 'Space') jump();
+    if (event.code === 'ArrowDown') {
+        agachado = true;
+        gabriel.src = 'img/Ramthun agachado.png';
+        gabriel.style.width = '80px';
+        gabriel.style.marginTop = '20px';
+        gabriel.style.marginLeft = '20px';
+    }
+});
+
+document.addEventListener('keyup', (event) => {
+    if (event.code === 'ArrowDown') {
+        agachado = false;
+        gabriel.src = 'img/Gaybriel Ranthum.gif';
+        gabriel.style.width = '140px';
+        gabriel.style.marginTop = '0';
+        gabriel.style.marginLeft = '0';
+    }
 });
 
 // ===========================
-// Dificuldade aumenta com o sol
+// Dificuldade aumenta com o sol (ajusta durações e mantém alternância)
 sol.addEventListener('animationiteration', () => {
-    const currentDuration = parseFloat(getComputedStyle(tijolo).animationDuration);
-    const newDuration = Math.max(0.5, currentDuration - 0.2);
-    tijolo.style.animationDuration = `${newDuration}s`;
+    durMadeira = Math.max(0.5, durMadeira - 0.2);
+    durPassaro = Math.max(0.5, durMadeira + 0.3); // pássaro um pouco mais lento
+
+    madeira.style.animationDuration = `${durMadeira}s`;
+    passaro.style.animationDuration = `${durPassaro}s`;
 });
 
+// ===========================
 // Mudar de fase
 function mudarDeFase() {
     fase++;
-    // Atualiza visual da fase
     if (faseEl) faseEl.textContent = `Fase: ${fase}`;
-    // Pode direcionar para outra página ou modificar o jogo aqui
-    window.location.href = 'fase2.html'; // Exemplo de mudança de página
+    window.location.href = 'fase2.html';
 }

@@ -33,8 +33,12 @@ html, body {
     margin: 0 auto;
     position: relative;
     overflow: hidden;
-    background: linear-gradient(#ffae00, #fbff00);
     display: flex;
+
+    /* Exemplo de fundo pixelado */
+    background: url('img/floresta.jpg') no-repeat center center;
+    background-size: cover;
+    image-rendering: pixelated; /* mantém o estilo pixel */
 }
 
 /* Painel de pontuação */
@@ -95,11 +99,11 @@ html, body {
 }
 
 /* Elementos do jogo */
-.tijolo {
+.madeira {
     position: absolute;
     bottom: 0;
     width: 110px;
-    animation: tijolo-animation 1.5s infinite linear;
+    animation: madeira-animation 1.5s infinite linear;
 }
 
 .sol {
@@ -120,8 +124,20 @@ html, body {
     animation: jump 500ms ease-out;
 }
 
+.passaro {
+    position: absolute;
+    bottom: 75px;   /* ajusta a altura do voo */
+    width: 100px;
+    animation: passaro-animation 1.8s infinite linear;
+}
+
+@keyframes passaro-animation {
+    from { right: -90px; }
+    to { right: 100%; }
+}
+
 /* Animações */
-@keyframes tijolo-animation {
+@keyframes madeira-animation {
     from {
         right: -90px;
     }
@@ -222,4 +238,12 @@ html, body {
 }
 .tijolo, .sol, .pessoa1 {
     animation-play-state: paused;
+}
+
+.madeira, .passaro {
+  opacity: 0;
+}
+
+.madeira.ativo, .passaro.ativo {
+  opacity: 1;
 }
