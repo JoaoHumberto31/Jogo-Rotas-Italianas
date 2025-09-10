@@ -10,15 +10,14 @@ let posicao = 0;
 let jogoAtivo = false;
 let passo = 10;
 
-// ===========================
+
 // Botão Start
 startBtn.addEventListener('click', () => {
     introScreen.style.display = 'none';
     iniciarJogo();
 });
 
-// ===========================
-// Iniciar Jogo
+
 function iniciarJogo() {
     jogoAtivo = true;
     posicao = 0;
@@ -28,12 +27,7 @@ function iniciarJogo() {
     dialogo.style.display = 'none';
 }
 
-// ===========================
-// Caixa de diálogo
-function mostrarDialogo() {
-    dialogo.style.display = 'block';
-    jogoAtivo = false;
-}
+
 function ClicarEspaco() {
     espaco.style.display = 'block';
     jogoAtivo = false;
@@ -43,12 +37,12 @@ function proximaFase() {
     window.location.href = "fase2.html";
 }
 
-// ===========================
+
 // Botões Reiniciar e Início
 reiniciarId.addEventListener('click', iniciarJogo);
 inicioId.addEventListener('click', () => { window.location.href = 'index.html'; });
 
-// ===========================
+
 // Movimento com setas
 document.addEventListener("keydown", (e) => {
     if (!jogoAtivo) return;
@@ -69,15 +63,15 @@ document.addEventListener("keydown", (e) => {
         ClicarEspaco();
     }
     document.addEventListener('keydown', function(event) {
-        if (event.code === 'Space') {
+        if (event.code === 'Enter') {
           console.log('Espaço foi pressionado!');
+          proximaFase()
         }
       });
       
    
 });
 
-// ===========================
 // Tecla espaço para pular
 document.addEventListener("keydown", (e) => {
     if (e.code === "Space" && jogoAtivo) {

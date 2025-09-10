@@ -238,5 +238,5 @@ sol.addEventListener('animationiteration', () => {
 function mudarDeFase() {
     fase++;
     if (faseEl) faseEl.textContent = `Fase: ${fase}`;
-    window.location.href = 'fase2.html';
+    window.location.href = 'animacaofinalfase1.html';
 }
