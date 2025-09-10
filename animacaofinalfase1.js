@@ -34,8 +34,14 @@ function ClicarEspaco() {
 }
 // Botão "Próximo"
 function proximaFase() {
-    window.location.href = "fase2.html";
+    const fadeScreen = document.getElementById('fade-screen');
+    fadeScreen.classList.add('active'); // ativa a tela preta
+    
+    setTimeout(() => {
+        window.location.href = "animacaofinalfase2.html";
+    }, 800);
 }
+
 
 
 // Botões Reiniciar e Início

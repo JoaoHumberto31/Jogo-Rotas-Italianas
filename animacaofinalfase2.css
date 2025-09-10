@@ -90,7 +90,7 @@ html, body {
 /* Animações */
 @keyframes tijolo-animation {
     from { right: -90px; }
-    to { right: 5%; }
+    to { right: 50%; }
 }
 
 @keyframes sol-animation {
