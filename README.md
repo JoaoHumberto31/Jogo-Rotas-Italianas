@@ -41,7 +41,7 @@ O jogo se passa em locais reais de **Jaraguá do Sul**, com ênfase no **Distrit
 
 ## 📷 Imagens (em breve)
 
-> ⚠️ Screenshots e vídeos serão adicionados à medida que o desenvolvimento avança.
+> <img width="1326" height="626" alt="image" src="https://github.com/user-attachments/assets/7295fe09-475a-402e-a102-d09d814b1598" />
 
 ---
 
@@ -62,10 +62,6 @@ O jogo presta homenagem à sua memória, retratando a importância da fé e da s
 
 ---
 
-## 📌 Status do Projeto
-
-🚧 **Em desenvolvimento**  
-📅 Previsão de demo: [Data estimada, se houver]
 
 ---
 
