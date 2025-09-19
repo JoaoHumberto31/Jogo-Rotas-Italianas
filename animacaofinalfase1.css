@@ -73,7 +73,6 @@ html, body {
     width: 240px;
     position: absolute;
     bottom: 240px;
-    animation: sol-animation 20s linear infinite;
 }
 
 .pessoa1 {
@@ -91,11 +90,6 @@ html, body {
 @keyframes tijolo-animation {
     from { right: -90px; }
     to { right: 5%; }
-}
-
-@keyframes sol-animation {
-    from { right: -90px; }
-    to { right: 10%; }
 }
 
 @keyframes jump {

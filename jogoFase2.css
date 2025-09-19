@@ -48,7 +48,7 @@ html, body {
 /* Painel de pontuação */
 .pontuacao-board {
     width: 100%;
-    height: 600px;
+    height: 80%;
     bottom: 0;
     position: relative;
     overflow: hidden;
@@ -115,7 +115,7 @@ html, body {
 .sol {
     width: 200px;
     position: absolute;
-    bottom: 130px;
+    bottom: 250px;
     animation: sol-animation 20s linear infinite;
 }
 

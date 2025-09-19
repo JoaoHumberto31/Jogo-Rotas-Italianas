@@ -27,7 +27,8 @@ body, html {
 }
 
 .credit-text {
-    animation: scrollUp 10s linear infinite;
+    animation: scrollUp 5s ease-out forwards; /* sobe até o centro */
+    opacity: 1;
 }
 
 h1 {
@@ -52,12 +53,35 @@ h1:nth-child(even), p:nth-child(even) {
     animation-delay: 3s;
 }
 
+/* Estilo do botão voltar */
+.back-button {
+    position: absolute;
+    bottom: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px 30px;
+    background-color: #333;
+    border: 2px solid white;
+    color: white;
+    font-size: 1em;
+    font-family: 'Press Start 2P', cursive;
+    cursor: pointer;
+    transition: opacity 0.8s ease-in-out;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.back-button.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
 @keyframes scrollUp {
     0% {
-        transform: translateY(100%);
+        transform: translateY(100%); /* começa fora da tela embaixo */
     }
     100% {
-        transform: translateY(-100%);
+        transform: translateY(0); /* para no meio da tela */
     }
 }
 
