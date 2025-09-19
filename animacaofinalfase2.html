@@ -10,41 +10,16 @@
 </head>
 
 <body>
-    <main>
-        <!-- Tela de Introdução -->
-        <div id="intro-screen" class="intro-screen">
-            <div class="intro-box">
-                <h2>Final fase 1:</h2>
-                <p>Você conseguiu passar de fase!!</p>
-                <p>Parabéns, a igreja foi construída</p>
-                <p>Clique no botão abaixo para continuar</p>
-                <button id="start-btn" class="btn-start">Continuar</button>
-            </div>
-        </div>
+    <!-- Retângulo sombra sobre a imagem -->
+    <div id="overlay"></div>
 
-        <!-- Área do jogo -->
-        <div class="game-board">
-            <img src="/img/sol.png" class="sol">
-            <img src="/img/Gaybriel Ranthum.gif" class="pessoa1">
-            <img src="/img/igreja-quebrada.png" class="tijolo" style="height: 500px;">
+    <div class="dialogo">
+        <p>Parabéns, você finalizou a versão BETA do <br> <br>SUPER PADRE AURA </p>
+        <button id="finalizarBtn">Finalizar</button>
+    </div>
+    <main></main>
 
-            <div style="text-align: center; justify-content: center;">
-                <button class="botao-restart" id="reiniciar">Reiniciar</button>
-                <button class="botao-inicio" id="inicio">Início</button>
-            </div>
-        </div>
-
-
-        <div id="clicarEspaco" class="dialogo">
-            <p> Clique na tecla <br> <span id="dialogo-texto" class="key">Enter</span> <br>para o personagem entrar na
-                igreja </p>
-        </div>
-
-        <div class="pontuacao-board"></div>
-    </main>
-    <div id="fade-screen"></div>
-
-    <script src="animacaofinalfase1.js"></script>
+    <script src="animacaofinalfase2.js"></script>
 </body>
 
 </html>
